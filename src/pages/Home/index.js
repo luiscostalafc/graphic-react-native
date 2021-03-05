@@ -8,7 +8,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 import styles from './styles';
 import CustomBarChart from '../../components/CutomBarChart';
-import { yourBusinessData } from '../../chartsData';
+import { yourBusinessData, yourCompetitorData } from '../../chartsData';
 
 function Home() {
   const [yourBusinessDimensions, setYourBusinessDimensions] = useState(null);
@@ -69,7 +69,8 @@ function Home() {
         </View>
         <View style={styles.businessAnalyticsContainer}>
           <View style={styles.businessAnalyticsData}>
-            <Text style={styles.businessAnalyticsTitle}>Seu Negócio</Text>
+            <Text style={styles.businessAnalyticsTitle}>Seu Concorrente</Text>
+
             <View style={styles.businessAnalyticsValueContainer}>
               <Text style={styles.businessAnalyticsValue}>R$ 7.600,00</Text>
               <Text
@@ -82,7 +83,24 @@ function Home() {
               </Text>
             </View>
           </View>
-          <View style={styles.businessAnalyticsChart} />
+          <View
+            onLayout={({
+              nativeEvent: {
+                layout: { width, height },
+              },
+            }) => setYourCompetitorDimensions({ width, height })}
+            style={[
+              styles.businessAnalyticsChart,
+              yourCompetitorDimensions
+                ? styles.businessAnalyticsChartWithData
+                : styles.businessAnalyticsChartWithoutData,
+            ]}
+          >
+            <CustomBarChart
+              chartData={yourCompetitorData}
+              chartDimensions={yourCompetitorDimensions}
+            />
+          </View>
         </View>
         <TouchableOpacity
           onPress={handleProductReportPress}
